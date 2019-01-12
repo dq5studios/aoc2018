@@ -3,7 +3,7 @@
  * @see https://adventofcode.com/2018/day/4
  */
 
-let aoc4a = () => {
+let aoc4b = () => {
 
     let input = `[1518-07-31 00:54] wakes up
 [1518-04-09 00:01] Guard #3407 begins shift
@@ -1168,12 +1168,6 @@ let aoc4a = () => {
 // [1518-11-03 00:05] Guard #10 begins shift
 // [1518-11-03 00:24] falls asleep
 // [1518-11-03 00:29] wakes up
-// [1518-11-06 00:05] Guard #10 begins shift
-// [1518-11-06 00:20] falls asleep
-// [1518-11-06 00:23] wakes up
-// [1518-11-07 00:05] Guard #10 begins shift
-// [1518-11-07 00:10] falls asleep
-// [1518-11-07 00:21] wakes up
 // [1518-11-04 00:02] Guard #99 begins shift
 // [1518-11-04 00:36] falls asleep
 // [1518-11-04 00:46] wakes up
@@ -1211,16 +1205,18 @@ let aoc4a = () => {
     });
     let max_guard: number;
     let max_sleep: number = 0;
+    let max_index: number;
     total_sleep.forEach((val, index) => {
-        let sleep = val.reduce((sum, val) => { return sum + val; }, 0);
-        if (sleep > max_sleep) {
+        let sleep_index = total_sleep[index].indexOf(total_sleep[index].reduce((a, b) => Math.max(a, b)));
+        console.log(total_sleep[index][sleep_index]);
+        if (total_sleep[index][sleep_index] > max_sleep) {
             max_guard = index;
-            max_sleep = sleep;
+            max_sleep = total_sleep[index][sleep_index];
+            max_index = sleep_index;
         }
     });
-    let common_min = total_sleep[max_guard].indexOf(total_sleep[max_guard].reduce((a, b) => Math.max(a, b)));
 
-    self.postMessage([common_min * max_guard]);
+    self.postMessage([max_guard * max_index]);
 }
 
 
@@ -1230,7 +1226,7 @@ let aoc4a = () => {
  * @param {MessageEvent} event Message received
  */
 function commandDispatch(event: MessageEvent): void {
-    aoc4a();
+    aoc4b();
 }
 
 self.onmessage = commandDispatch;
